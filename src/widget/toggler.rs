@@ -314,7 +314,7 @@ where
                 border: Border {
                     radius: border_radius.into(),
                     width: 1.0,
-                    color: style.background_border.unwrap_or(style.background),
+                    color: style.background_border_color,
                 },
                 shadow: Default::default(),
             },
@@ -339,7 +339,7 @@ where
                 border: Border {
                     radius: border_radius.into(),
                     width: 1.0,
-                    color: style.foreground_border.unwrap_or(style.foreground),
+                    color: style.foreground_border_color,
                 },
                 shadow: Default::default(),
             },
@@ -380,8 +380,8 @@ fn blend_appearances(
                 .map(|(o, t)| lerp(*o, *t, percent)),
         );
 
-        let border_one: Color = one.background_border.unwrap_or(color!(0, 0, 0));
-        let border_two: Color = two.background_border.unwrap_or(color!(0, 0, 0));
+        let border_one: Color = one.background_border_color;
+        let border_two: Color = two.background_border_color;
 
         let new_border = static_array_from_iter::<f32, 4>(
             border_one
@@ -399,8 +399,8 @@ fn blend_appearances(
                 .map(|(o, t)| lerp(*o, *t, percent)),
         );
 
-        let f_border_one: Color = one.foreground_border.unwrap_or(color!(0, 0, 0));
-        let f_border_two: Color = two.foreground_border.unwrap_or(color!(0, 0, 0));
+        let f_border_one: Color = one.foreground_border_color;
+        let f_border_two: Color = two.foreground_border_color;
         let new_f_border = static_array_from_iter::<f32, 4>(
             f_border_one
                 .into_linear()
@@ -410,9 +410,9 @@ fn blend_appearances(
         );
 
         two.background = background.into();
-        two.background_border = Some(new_border.into());
+        two.background_border_color = new_border.into();
         two.foreground = foreground.into();
-        two.foreground_border = Some(new_f_border.into());
+        two.foreground_border_color = new_f_border.into();
         two
     }
 }
